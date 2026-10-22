@@ -173,14 +173,6 @@ export default async function Home() {
             Full-stack developer building production-oriented web applications using React, Next.js, TypeScript, Node.js, and Supabase. Focused on fast execution, scalable architecture, and turning ideas into production-ready software.
           </p>
 
-          <p className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-3">
-            I&apos;m a 22 year-old student living in <span className="font-semibold text-zinc-900 dark:text-white">Bengaluru, India</span>, currently pursuing my <span className="font-semibold text-zinc-900 dark:text-white">MCA at Dayananda Sagar University</span>. Passionate about exploring modern web technologies, I enjoy crafting interactive tools and shipping software that actually works.
-          </p>
-
-          <p className="text-[13px] sm:text-[14px] text-zinc-500 dark:text-zinc-400 leading-relaxed mt-2 italic">
-            Outside of tech, I love playing football and analyzing tactics on the chessboard.
-          </p>
-
           {/* Action Buttons & Socials */}
           <div className="flex flex-wrap items-center gap-2 mt-4">
             <SoftPillButton
