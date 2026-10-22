@@ -10,7 +10,7 @@ export function RightNavbar() {
 
   const links = useMemo(
     () => [
-      { name: "About", href: "#about" },
+      { name: "About", href: "#about-me" },
       { name: "Projects", href: "#projects" },
       { name: "Activity", href: "#github" },
       { name: "Skills", href: "#skills" },

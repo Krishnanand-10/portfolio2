@@ -233,6 +233,42 @@ export default async function Home() {
           </div>
         </div>
 
+        {/* A bit about me */}
+        <div id="about-me" className="mt-8 flex flex-col relative z-10 scroll-mt-24">
+          <div
+            className="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none"
+            style={{
+              maskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+              WebkitMaskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+            }}
+          />
+          <div className="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
+          <div className="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
+
+          <div className="py-2 relative mt-1">
+            <h2 className="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">A bit about me</h2>
+
+            <div
+              className="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none"
+              style={{
+                maskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+                WebkitMaskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+              }}
+            />
+            <div className="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
+            <div className="absolute bottom-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
+          </div>
+
+          <div className="py-4 flex flex-col gap-3">
+            <p className="text-[14px] sm:text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
+              I&apos;m a 22 year-old student living in <strong className="font-semibold text-zinc-900 dark:text-white">Bengaluru, India</strong>, currently pursuing my <strong className="font-semibold text-zinc-900 dark:text-white">MCA at Dayananda Sagar University</strong>. Passionate about exploring modern web technologies, I enjoy crafting interactive tools and shipping software that actually works.
+            </p>
+            <p className="text-[14px] sm:text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
+              Outside of tech, I love playing football and analyzing tactics on the chessboard.
+            </p>
+          </div>
+        </div>
+
         {/* Projects */}
         <div id="projects" className="mt-8 flex flex-col relative z-10 scroll-mt-24">
           <div
