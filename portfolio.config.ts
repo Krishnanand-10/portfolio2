@@ -50,7 +50,7 @@ export const portfolio = {
   /** Path under /public. */
   resume: "/Krishnanand_Tiwari_Resume.pdf",
   /** "Book an intro call" button. Set to "" to hide it. */
-  bookingLink: "",
+  bookingLink: "https://cal.com/krishna-tiwari/30min",
 
   /**
    * Search Console verification.
