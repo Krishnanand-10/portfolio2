@@ -12,10 +12,11 @@ import { CleanHash } from "@/components/CleanHash";
 import { skillGroups } from "@/data/skillsData";
 import { getSocialProfiles } from "@/lib/stats/socials";
 import SoftPillButton from "@/components/pixel-perfect/soft-pill-button";
+import { FlipCoverButton } from "@/components/pixel-perfect/flip-cover-button";
 import SocialHoverCard from "@/components/pixel-perfect/social-hover-card";
 import { BannerParticles } from "@/components/BannerParticles";
 import Image from "next/image";
-import { SiGithub, SiX } from "react-icons/si";
+import { SiGithub, SiX, SiLeetcode } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa6";
 import { Mail, ArrowRight, ExternalLink } from "lucide-react";
 
@@ -173,63 +174,74 @@ export default async function Home() {
             Full-stack developer building production-oriented web applications using React, Next.js, TypeScript, Node.js, and Supabase. Focused on fast execution, scalable architecture, and turning ideas into production-ready software.
           </p>
 
-          {/* Action Buttons & Socials */}
+          {/* Action Buttons: Book an intro call + Send an email */}
           <div className="flex flex-wrap items-center gap-2 mt-4">
-            <SoftPillButton
-              as="a"
-              href={portfolio.resume}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="secondary"
-              className="px-3.5 py-1.5 !text-[12px]"
-            >
-              <div className="flex items-center gap-1.5 font-medium">
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  <line x1="16" y1="13" x2="8" y2="13" />
-                  <line x1="16" y1="17" x2="8" y2="17" />
-                </svg>
-                Resume
-              </div>
-            </SoftPillButton>
-
-            <SoftPillButton
-              as="a"
-              href={`mailto:${portfolio.email}`}
-              variant="secondary"
-              className="px-3.5 py-1.5 !text-[12px]"
-            >
-              <div className="flex items-center gap-1.5 font-medium">
-                <Mail className="w-3.5 h-3.5" />
-                Get in touch
-              </div>
-            </SoftPillButton>
+            <FlipCoverButton href={portfolio.bookingLink || `mailto:${portfolio.email}`} label="Book an intro call" />
+            <Link href="/contact">
+              <SoftPillButton
+                as="span"
+                variant="secondary"
+                className="px-3 py-1.5 !text-[12px]"
+              >
+                <div className="flex items-center gap-1.5 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                  Send an email
+                </div>
+              </SoftPillButton>
+            </Link>
           </div>
 
-          {/* Socials Row */}
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {[
-              { name: "GitHub", href: `https://github.com/${portfolio.handles.github}`, icon: <SiGithub className="w-3.5 h-3.5" /> },
-              { name: "Twitter", href: `https://x.com/${portfolio.handles.x}`, icon: <SiX className="w-3.5 h-3.5" /> },
-              { name: "LinkedIn", href: `https://www.linkedin.com/in/${portfolio.handles.linkedin}/`, icon: <FaLinkedin className="w-3.5 h-3.5" /> },
-            ].map((social, i) => (
-              <SocialHoverCard key={i} socialName={social.name} profile={socialProfiles[social.name]}>
-                <SoftPillButton
-                  as="a"
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="secondary"
-                  className="px-3 py-1.5 !text-[12px]"
-                >
-                  <div className="flex items-center gap-1.5 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
-                    {social.icon}
-                    {social.name}
-                  </div>
-                </SoftPillButton>
-              </SocialHoverCard>
-            ))}
+          {/* Socials */}
+          <div id="contact" className="mt-6 scroll-mt-24">
+            <h2 className="text-[14px] text-zinc-500 mb-2">
+              Here are my <span className="font-medium text-zinc-800 dark:text-zinc-200">socials</span>
+            </h2>
+            <div className="flex flex-wrap gap-1.5">
+              {[
+                { name: "GitHub", href: `https://github.com/${portfolio.handles.github}`, icon: <SiGithub className="w-3.5 h-3.5" /> },
+                { name: "Twitter", href: `https://x.com/${portfolio.handles.x}`, icon: <SiX className="w-3.5 h-3.5" /> },
+                { name: "LinkedIn", href: `https://www.linkedin.com/in/${portfolio.handles.linkedin}/`, icon: <FaLinkedin className="w-3.5 h-3.5" /> },
+                ...(portfolio.handles.leetcode ? [{ name: "LeetCode", href: `https://leetcode.com/u/${portfolio.handles.leetcode}`, icon: <SiLeetcode className="w-3.5 h-3.5" /> }] : []),
+              ].map((social, i) => (
+                <SocialHoverCard key={i} socialName={social.name} profile={socialProfiles[social.name]}>
+                  <SoftPillButton
+                    as="a"
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="secondary"
+                    className="px-3 py-1.5 !text-[12px]"
+                  >
+                    <div className="flex items-center gap-1.5 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                      {social.icon}
+                      {social.name}
+                    </div>
+                  </SoftPillButton>
+                </SocialHoverCard>
+              ))}
+
+              <SoftPillButton
+                as="a"
+                href={portfolio.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="secondary"
+                className="px-3 py-1.5 !text-[12px]"
+              >
+                <div className="flex items-center gap-1.5 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                  </svg>
+                  Résumé
+                </div>
+              </SoftPillButton>
+            </div>
           </div>
         </div>
 
