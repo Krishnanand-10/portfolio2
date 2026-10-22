@@ -21,12 +21,18 @@ interface FlipCoverButtonProps {
  * revealing the button inside.
  */
 export function FlipCoverButton({
-  href = portfolio.resume,
+  href = portfolio.bookingLink || portfolio.resume,
   label = "Book an intro call",
   className = "",
 }: FlipCoverButtonProps) {
+  const calLink = "krishna-tiwari/30min";
+
   return (
-    <section className={`${styles.section} ${className}`}>
+    <section
+      className={`${styles.section} ${className}`}
+      data-cal-link={calLink}
+      data-cal-config='{"layout":"month_view","theme":"dark"}'
+    >
       {/* In-flow element that sets the EXACT height, padding, and width matching SoftPillButton */}
       <SoftPillButton
         as="div"
@@ -52,11 +58,11 @@ export function FlipCoverButton({
 
       {/* Inside: Revealed small cal.com button matching Cal.com theme */}
       <div className={styles.button}>
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full h-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-black dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 rounded-[4px] text-[12px] font-semibold tracking-wide whitespace-nowrap shadow-sm border border-white/10 dark:border-black/10 transition-colors"
+        <button
+          type="button"
+          data-cal-link={calLink}
+          data-cal-config='{"layout":"month_view","theme":"dark"}'
+          className="w-full h-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-black dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 rounded-[4px] text-[12px] font-semibold tracking-wide whitespace-nowrap shadow-sm border border-white/10 dark:border-black/10 transition-colors cursor-pointer"
         >
           <svg
             viewBox="0 0 24 24"
@@ -71,7 +77,7 @@ export function FlipCoverButton({
             <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
           <span>cal.com</span>
-        </a>
+        </button>
       </div>
 
       {/* 3D Cover Lid (The white button) */}

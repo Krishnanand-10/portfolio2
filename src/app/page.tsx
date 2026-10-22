@@ -420,11 +420,11 @@ export default async function Home() {
             </p>
 
             <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href={portfolio.bookingLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 rounded-[6px] text-[13px] font-medium transition-colors shadow-sm"
+              <button
+                type="button"
+                data-cal-link="krishna-tiwari/30min"
+                data-cal-config='{"layout":"month_view","theme":"dark"}'
+                className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 rounded-[6px] text-[13px] font-medium transition-colors shadow-sm cursor-pointer"
               >
                 <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -433,7 +433,7 @@ export default async function Home() {
                   <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
                 <span>Book a call</span>
-              </a>
+              </button>
               <a
                 href={`mailto:${portfolio.email}`}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 rounded-[6px] text-[13px] font-medium transition-colors"

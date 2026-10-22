@@ -4,6 +4,7 @@ import "./globals.css";
 import { SITE_URL } from "@/lib/site";
 import { portfolio } from "~/portfolio.config";
 import { ThemeProvider } from "@/components/theme-provider";
+import { CalEmbed } from "@/components/CalEmbed";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -67,6 +68,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <CalEmbed />
         <Analytics />
         <SpeedInsights />
       </body>
