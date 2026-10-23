@@ -26,7 +26,7 @@ function embed(file: string): string | null {
   }
 }
 
-const banner = embed("banner-dark.jpg");
+const banner = embed("banner-poster.jpg") || embed("avatar.jpg");
 const avatar = embed("avatar.jpg") || embed("avatar.png");
 
 const ART = { w: 1887, h: 630, left: -546 };

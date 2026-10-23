@@ -46,6 +46,16 @@ export const metadata: Metadata = {
     site: `@${portfolio.handles.x}`,
     creator: `@${portfolio.handles.x}`,
   },
+  icons: {
+    icon: [
+      { url: "/icon.png", sizes: "256x256", type: "image/png" },
+      { url: "/avatar.jpg", type: "image/jpeg" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: ["/avatar.jpg"],
+  },
 };
 
 export default function RootLayout({

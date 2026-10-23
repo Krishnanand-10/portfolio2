@@ -2,9 +2,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { GithubGraph } from "@/components/GithubGraph";
 import { CurrentTime } from "@/components/CurrentTime";
 import { ProjectsGrid } from "@/components/ProjectsGrid";
-import { BlogList } from "@/components/BlogList";
 import { FooterBackground } from "@/components/FooterBackground";
-import { RightNavbar } from "@/components/RightNavbar";
+import { Navbar } from "@/components/Navbar";
 import { CommandMenu } from "@/components/command-menu";
 import Link from "next/link";
 import { portfolio } from "~/portfolio.config";
@@ -14,16 +13,12 @@ import { getSocialProfiles } from "@/lib/stats/socials";
 import SoftPillButton from "@/components/pixel-perfect/soft-pill-button";
 import { FlipCoverButton } from "@/components/pixel-perfect/flip-cover-button";
 import SocialHoverCard from "@/components/pixel-perfect/social-hover-card";
-import { BannerParticles } from "@/components/BannerParticles";
+import { VideoBanner } from "@/components/VideoBanner";
+import { GitaQuoteCard } from "@/components/GitaQuoteCard";
 import Image from "next/image";
-import { SiGithub, SiX, SiLeetcode } from "react-icons/si";
+import { SiGithub, SiX } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa6";
 import { Mail, ArrowRight, ExternalLink } from "lucide-react";
-
-const lightBannerPlaceholder =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 11'%3E%3Crect width='32' height='11' fill='%23d9e5e7'/%3E%3C/svg%3E";
-const darkBannerPlaceholder =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 11'%3E%3Crect width='32' height='11' fill='%23071329'/%3E%3C/svg%3E";
 
 export default async function Home() {
   const socialProfiles = await getSocialProfiles();
@@ -32,8 +27,8 @@ export default async function Home() {
     <div className="min-h-screen w-full bg-white dark:bg-black relative overflow-x-hidden transition-colors duration-300">
       <CleanHash />
 
-      {/* Right Side Blueprint Navigation */}
-      <RightNavbar />
+      {/* Floating Top Navigation */}
+      <Navbar />
 
       {/* Vertical Lines - Ultra-fine Micro Dots */}
       <div
@@ -57,7 +52,7 @@ export default async function Home() {
 
       {/* Horizontal Lines - Ultra-fine Micro Dots */}
       <div
-        className="absolute left-0 right-0 top-[22vh] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none"
+        className="absolute left-0 right-0 top-[calc(56px+22vh)] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none"
         style={{
           maskImage:
             "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
@@ -66,7 +61,7 @@ export default async function Home() {
         }}
       />
       <div
-        className="absolute left-0 right-0 top-[calc(22vh+112px)] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none"
+        className="absolute left-0 right-0 top-[calc(56px+22vh+112px)] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none"
         style={{
           maskImage:
             "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
@@ -77,10 +72,12 @@ export default async function Home() {
 
       {/* Ultra-Tiny Solid Nodes */}
       {[
-        { top: "22vh", left: "30%" },
-        { top: "22vh", right: "30%" },
-        { top: "calc(22vh + 112px)", left: "30%" },
-        { top: "calc(22vh + 112px)", right: "30%" },
+        { top: "56px", left: "30%" },
+        { top: "56px", right: "30%" },
+        { top: "calc(56px + 22vh)", left: "30%" },
+        { top: "calc(56px + 22vh)", right: "30%" },
+        { top: "calc(56px + 22vh + 112px)", left: "30%" },
+        { top: "calc(56px + 22vh + 112px)", right: "30%" },
       ].map((pos, i) => (
         <div
           key={i}
@@ -94,34 +91,9 @@ export default async function Home() {
         />
       ))}
 
-      {/* Cell 1: Top Hero Banner with interactive particles */}
-      <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-0 h-[22vh] -z-0 pointer-events-auto overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/banner-light.jpg"
-            alt="Banner light"
-            fill
-            sizes="(min-width: 768px) 40vw, 100vw"
-            quality={60}
-            priority
-            placeholder="blur"
-            blurDataURL={lightBannerPlaceholder}
-            className="object-cover object-center dark:hidden opacity-90 saturate-[0.85] contrast-[1.05]"
-          />
-          <Image
-            src="/banner-dark.jpg"
-            alt="Banner dark"
-            fill
-            sizes="(min-width: 768px) 40vw, 100vw"
-            quality={60}
-            priority
-            placeholder="blur"
-            blurDataURL={darkBannerPlaceholder}
-            className="hidden dark:block object-cover object-center opacity-85 contrast-[1.15]"
-          />
-        </div>
-
-        <BannerParticles />
+      {/* Cell 1: Top Hero Banner with 15s video loop - directly AFTER the top bar */}
+      <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-14 h-[22vh] -z-0 pointer-events-auto overflow-hidden">
+        <VideoBanner />
 
         <div className="absolute bottom-3 right-2 z-10 pointer-events-auto">
           <CurrentTime />
@@ -129,7 +101,7 @@ export default async function Home() {
       </div>
 
       {/* Cell 2: Profile Section */}
-      <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-[22vh] h-[112px] flex items-center px-4 z-50">
+      <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-[calc(56px+22vh)] h-[112px] flex items-center px-4 z-50">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-4 sm:gap-5">
             <div className="relative p-[3px] rounded-[6px] sm:rounded-[8px] border-[1.5px] border-black/30 dark:border-white/[0.15] shrink-0">
@@ -153,20 +125,19 @@ export default async function Home() {
                 Krishna Nand Tiwari
               </h1>
               <p className="text-[13px] sm:text-[14px] text-zinc-500 dark:text-zinc-400">
-                Full Stack Developer · Bengaluru, India
+                Bengaluru, India
               </p>
             </div>
           </div>
 
           <div className="flex items-start justify-end gap-2 sm:gap-3 h-20 sm:h-24 py-1">
-            <CommandMenu />
-            <ThemeToggle className="dark:text-zinc-400 hover:dark:text-zinc-300" />
+            <CommandMenu hideTrigger />
           </div>
         </div>
       </div>
 
       {/* Flowing Content Section */}
-      <div className="ml-0 mr-0 md:ml-[30%] md:mr-[30%] pt-[calc(22vh+112px)] pb-0 px-4 flex flex-col z-10 relative min-h-screen">
+      <div className="ml-0 mr-0 md:ml-[30%] md:mr-[30%] pt-[calc(56px+22vh+112px)] pb-0 px-4 flex flex-col z-10 relative min-h-screen">
         
         {/* Hero Bio */}
         <div id="about" className="mt-4 scroll-mt-24">
@@ -174,28 +145,8 @@ export default async function Home() {
             Full-stack developer building production-oriented web applications using React, Next.js, TypeScript, Node.js, and Supabase. Focused on fast execution, scalable architecture, and turning ideas into production-ready software.
           </p>
 
-          {/* Action Buttons: Book an intro call + Send an email */}
-          <div className="flex flex-wrap items-center gap-2 mt-4">
-            <FlipCoverButton href={portfolio.bookingLink || `mailto:${portfolio.email}`} label="Book an intro call" />
-            <Link href="/contact">
-              <SoftPillButton
-                as="span"
-                variant="secondary"
-                className="px-3 py-1.5 !text-[12px]"
-              >
-                <div className="flex items-center gap-1.5 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
-                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
-                  </svg>
-                  Send an email
-                </div>
-              </SoftPillButton>
-            </Link>
-          </div>
-
           {/* Socials */}
-          <div id="contact" className="mt-6 scroll-mt-24">
+          <div className="mt-5">
             <h2 className="text-[14px] text-zinc-500 mb-2">
               Here are my <span className="font-medium text-zinc-800 dark:text-zinc-200">socials</span>
             </h2>
@@ -204,7 +155,6 @@ export default async function Home() {
                 { name: "GitHub", href: `https://github.com/${portfolio.handles.github}`, icon: <SiGithub className="w-3.5 h-3.5" /> },
                 { name: "Twitter", href: `https://x.com/${portfolio.handles.x}`, icon: <SiX className="w-3.5 h-3.5" /> },
                 { name: "LinkedIn", href: `https://www.linkedin.com/in/${portfolio.handles.linkedin}/`, icon: <FaLinkedin className="w-3.5 h-3.5" /> },
-                ...(portfolio.handles.leetcode ? [{ name: "LeetCode", href: `https://leetcode.com/u/${portfolio.handles.leetcode}`, icon: <SiLeetcode className="w-3.5 h-3.5" /> }] : []),
               ].map((social, i) => (
                 <SocialHoverCard key={i} socialName={social.name} profile={socialProfiles[social.name]}>
                   <SoftPillButton
@@ -273,10 +223,13 @@ export default async function Home() {
 
           <div className="py-4 flex flex-col gap-3">
             <p className="text-[14px] sm:text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
-              I&apos;m a 22 year-old student living in <strong className="font-semibold text-zinc-900 dark:text-white">Bengaluru, India</strong>, currently pursuing my <strong className="font-semibold text-zinc-900 dark:text-white">MCA at Dayananda Sagar University</strong>. Passionate about exploring modern web technologies, I enjoy crafting interactive tools and shipping software that actually works.
+              I&apos;m a self-taught developer. I just enjoy writing code and building things. I&apos;m naturally curious about new tech, so I spend a lot of time learning and keeping myself updated.
             </p>
             <p className="text-[14px] sm:text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
-              Outside of tech, I love playing football and analyzing tactics on the chessboard.
+              I definitely don&apos;t know everything, but I catch on fast. If I&apos;m stuck, I ask for help. Honestly, I just want to show up, do good work, and keep getting better.
+            </p>
+            <p className="text-[14px] sm:text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
+              And I&apos;m fun to be around (at least that&apos;s what she said).
             </p>
           </div>
         </div>
@@ -376,29 +329,6 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* Blogs */}
-        <div id="blogs" className="mt-6 flex flex-col relative z-10 scroll-mt-24">
-          <div
-            className="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none"
-            style={{
-              maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)',
-              WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)'
-            }}
-          />
-          <div className="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
-          <div className="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
-
-          <div className="py-2 relative mt-1">
-            <h2 className="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Engineering Notes &amp; Blogs</h2>
-
-            <div className="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)' }} />
-            <div className="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
-            <div className="absolute bottom-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
-          </div>
-
-          <BlogList />
-        </div>
-
         {/* Contact & Discussion */}
         <div id="contact" className="mt-8 flex flex-col relative z-10 scroll-mt-24">
           <div
@@ -415,55 +345,44 @@ export default async function Home() {
             <h3 className="text-[17px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
               Hey, you scrolled this far, let&apos;s talk.
             </h3>
-            <p className="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 max-w-[420px]">
-              Need help building your next project or MVP? Let&apos;s connect and discuss ideas.
-            </p>
 
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-              <button
-                type="button"
-                data-cal-link="krishna-tiwari/30min"
-                data-cal-config='{"layout":"month_view","theme":"dark"}'
-                className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 rounded-[6px] text-[13px] font-medium transition-colors shadow-sm cursor-pointer"
-              >
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                </svg>
-                <span>Book a call</span>
-              </button>
-              <a
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+              <FlipCoverButton
+                href={portfolio.bookingLink || `mailto:${portfolio.email}`}
+                label="Book an intro call"
+              />
+              <SoftPillButton
+                as="a"
                 href={`mailto:${portfolio.email}`}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 rounded-[6px] text-[13px] font-medium transition-colors"
+                variant="secondary"
+                className="px-3.5 py-1.5 !text-[12px]"
               >
-                <Mail className="w-3.5 h-3.5" />
-                <span>Email me</span>
-              </a>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 rounded-[6px] text-[13px] font-medium transition-colors"
-              >
-                <span>Send message</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+                <div className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity duration-300">
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                  Send an email
+                </div>
+              </SoftPillButton>
             </div>
           </div>
         </div>
 
-        {/* Minimal Bhagavad Gita Quote Section from old portfolio */}
-        <div className="mt-2 flex flex-col items-center justify-center relative py-6">
-          <div className="max-w-[480px] w-full flex flex-col items-center text-center">
-            <h3 className="text-[14px] sm:text-[15px] font-medium leading-relaxed text-zinc-500 dark:text-zinc-400 mb-4 italic">
-              &ldquo;You have a right to perform your prescribed duty, but you are not entitled to the fruits of action.&rdquo;
-            </h3>
+        {/* Separate section: Gita quote without any section title */}
+        <div className="mt-8 flex flex-col relative z-10">
+          <div
+            className="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none"
+            style={{
+              maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)',
+              WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)'
+            }}
+          />
+          <div className="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
+          <div className="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
 
-            <div className="flex items-center gap-3 text-[10px] font-medium tracking-[0.2em] text-zinc-400 dark:text-zinc-600 uppercase">
-              <div className="w-4 h-[1px] bg-zinc-200 dark:bg-zinc-800" />
-              BHAGAVAD GITA, CHAPTER 2, VERSE 47
-              <div className="w-4 h-[1px] bg-zinc-200 dark:bg-zinc-800" />
-            </div>
+          <div className="py-8 flex flex-col items-center justify-center">
+            <GitaQuoteCard />
           </div>
         </div>
 

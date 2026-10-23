@@ -34,6 +34,7 @@ import {
     CommandShortcut,
 } from "@/components/ui/command"
 import { projectsData } from "@/data/projectsData"
+import { blogsData } from "@/data/blogsData"
 import { handles, email, resume } from "@/data/links"
 
 const itemClass = "rounded-lg py-3 cursor-pointer"
@@ -54,7 +55,11 @@ const PROFILES = [
     { label: "X", icon: SiX, href: `https://x.com/${handles.x}`, handle: `@${handles.x}` },
 ] as const
 
-export function CommandMenu() {
+interface CommandMenuProps {
+    hideTrigger?: boolean
+}
+
+export function CommandMenu({ hideTrigger = false }: CommandMenuProps = {}) {
     const [open, setOpen] = React.useState(false)
     const { setTheme } = useTheme()
     const router = useRouter()
@@ -62,6 +67,12 @@ export function CommandMenu() {
     const openExternal = React.useCallback((url: string) => {
         const opened = window.open(url, "_blank", "noopener,noreferrer")
         if (!opened) window.location.assign(url)
+    }, [])
+
+    React.useEffect(() => {
+        const handleOpen = () => setOpen(true)
+        window.addEventListener("open-command-menu", handleOpen)
+        return () => window.removeEventListener("open-command-menu", handleOpen)
     }, [])
 
     React.useEffect(() => {
@@ -117,20 +128,22 @@ export function CommandMenu() {
 
     return (
         <>
-            <button
-                onClick={() => setOpen(true)}
-                className="group relative flex items-center justify-between w-9 sm:w-44 h-8 px-2 sm:px-2.5 rounded-md bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200/50 dark:border-zinc-800/50 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-all text-[12px] font-medium"
-            >
-                <div className="flex items-center gap-2">
-                    <kbd className="hidden sm:inline-flex items-center gap-0.5 pointer-events-none font-mono text-[10px] text-zinc-400 dark:text-zinc-500 font-medium tracking-tight">
-                        <span className="text-[11px]">&gt;</span> Search
-                    </kbd>
-                    <span className="sm:hidden font-mono text-[11px]">&gt;</span>
-                </div>
-                <div className="hidden sm:flex items-center gap-0.5 font-mono text-[10px] text-zinc-400 dark:text-zinc-500 font-medium">
-                    <span className="text-[9px]">⌘</span>K
-                </div>
-            </button>
+            {!hideTrigger && (
+                <button
+                    onClick={() => setOpen(true)}
+                    className="group relative flex items-center justify-between w-9 sm:w-44 h-8 px-2 sm:px-2.5 rounded-md bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200/50 dark:border-zinc-800/50 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-all text-[12px] font-medium"
+                >
+                    <div className="flex items-center gap-2">
+                        <kbd className="hidden sm:inline-flex items-center gap-0.5 pointer-events-none font-mono text-[10px] text-zinc-400 dark:text-zinc-500 font-medium tracking-tight">
+                            <span className="text-[11px]">&gt;</span> Search
+                        </kbd>
+                        <span className="sm:hidden font-mono text-[11px]">&gt;</span>
+                    </div>
+                    <div className="hidden sm:flex items-center gap-0.5 font-mono text-[10px] text-zinc-400 dark:text-zinc-500 font-medium">
+                        <span className="text-[9px]">⌘</span>K
+                    </div>
+                </button>
+            )}
 
             <CommandDialog open={open} onOpenChange={setOpen}>
                 <CommandInput placeholder="Type a command or search..." />
@@ -170,6 +183,22 @@ export function CommandMenu() {
                                 <CommandShortcut className="font-mono text-[10px] text-zinc-400 dark:text-zinc-600">
                                     {project.status}
                                 </CommandShortcut>
+                            </CommandItem>
+                        ))}
+                    </CommandGroup>
+
+                    <CommandSeparator className="my-2" />
+
+                    <CommandGroup heading="Blogs">
+                        {blogsData.map((blog) => (
+                            <CommandItem
+                                key={blog.slug}
+                                value={`blog ${blog.title}`}
+                                onSelect={() => runCommand(() => router.push(`/blogs/${blog.slug}`))}
+                                className={itemClass}
+                            >
+                                <FileText className="mr-2 h-4 w-4 text-zinc-500" />
+                                <span className="truncate">{blog.title}</span>
                             </CommandItem>
                         ))}
                     </CommandGroup>

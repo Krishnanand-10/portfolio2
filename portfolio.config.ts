@@ -21,26 +21,12 @@ export const portfolio = {
 
   /**
    * Usernames only, never full URLs - the code builds the links and the stats
-   * fetchers query these directly. Leave a value empty to hide that profile.
+   * fetchers query these directly.
    */
   handles: {
     github: "Krishnanand-10",
     linkedin: "krishna-nand-tiwari-547037258",
     x: "Krishna_exe7",
-    leetcode: "",
-    codeforces: "",
-    codechef: "",
-  },
-
-  /**
-   * Guestbook, backed by GitHub Discussions via giscus.
-   * Empty repoId hides the guestbook.
-   */
-  giscus: {
-    repo: "Krishnanand-10/portfolio2" as `${string}/${string}`,
-    repoId: "",
-    category: "Announcements",
-    categoryId: "",
   },
 
   /** This site's own source, linked in the footer. Set to "" to hide the link. */
@@ -56,17 +42,6 @@ export const portfolio = {
    * Search Console verification.
    */
   googleSiteVerification: "",
-
-  /**
-   * Toggle optional sections off without deleting their code.
-   */
-  sections: {
-    blog: true,
-    anime: false,
-    hackathons: false,
-    dsa: false,
-    highlights: false,
-  },
 
   /**
    * Profile blurbs for the hover cards.

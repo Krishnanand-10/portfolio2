@@ -96,7 +96,7 @@ export function GithubGraph() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ query }),
+          body: JSON.stringify({ query, username: portfolio.handles.github }),
         });
 
         const data = await response.json();
@@ -115,7 +115,40 @@ export function GithubGraph() {
           }
         }
       } catch (error) {
-        console.error("Failed to fetch GitHub contributions", error);
+        console.error("Failed to fetch GitHub contributions from proxy, trying direct fetch", error);
+        try {
+          const directRes = await fetch(`https://github-contributions-api.jogruber.de/v4/${portfolio.handles.github}?y=last`);
+          if (directRes.ok) {
+            const json = await directRes.json();
+            const contribs = json.contributions || [];
+            const w: ContributionWeek[] = [];
+            let curW: ContributionDay[] = [];
+            const mSet = new Set<string>();
+            const mList: ContributionMonth[] = [];
+
+            for (const day of contribs) {
+              const d = new Date(`${day.date}T00:00:00`);
+              const mName = d.toLocaleString("en-US", { month: "short" });
+              if (!mSet.has(mName)) {
+                mSet.add(mName);
+                mList.push({ name: mName });
+              }
+              if (d.getDay() === 0 && curW.length > 0) {
+                w.push({ contributionDays: curW });
+                curW = [];
+              }
+              curW.push({ contributionCount: day.count, date: day.date });
+            }
+            if (curW.length > 0) w.push({ contributionDays: curW });
+
+            const total = json.total?.lastYear ?? contribs.reduce((acc: number, d: { count: number }) => acc + (d.count || 0), 0);
+            setWeeks(w);
+            setMonths(mList);
+            setTotalContributions(total);
+          }
+        } catch (directErr) {
+          console.error("Direct GitHub contributions fetch failed:", directErr);
+        }
       } finally {
         setLoading(false);
       }
@@ -182,7 +215,7 @@ export function GithubGraph() {
   const graphStatus =
     loading && totalContributions === 0
       ? "Loading GitHub contribution activity"
-      : `${totalContributions} GitHub activities in the last year`;
+      : `${totalContributions} contributions this year`;
   const dashedLineMask = {
     maskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
     WebkitMaskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",

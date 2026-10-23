@@ -10,11 +10,10 @@ import {
   Clock,
 } from "lucide-react";
 import { BlogLikeButton } from "@/components/BlogLikeButton";
-import { CommandMenu } from "@/components/command-menu";
 import { CurrentTime } from "@/components/CurrentTime";
 import { FooterBackground } from "@/components/FooterBackground";
-import { RightNavbar } from "@/components/RightNavbar";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Navbar } from "@/components/Navbar";
+import { BlogArticleContent } from "@/components/BlogArticleContent";
 import {
   BlogBlock,
   blogPosts,
@@ -66,7 +65,7 @@ export async function generateMetadata({
       type: "article",
       images: [
         {
-          url: "/og-image.jpg",
+          url: post.image || "/og-image.jpg",
           width: 1024,
           height: 576,
           alt: post.title,
@@ -77,7 +76,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      images: ["/og-image.jpg"],
+      images: [post.image || "/og-image.jpg"],
     },
   };
 }
@@ -95,19 +94,19 @@ function BlueprintFrame() {
       />
 
       <div
-        className="absolute left-0 right-0 top-[22vh] h-0 border-b border-black/30 pointer-events-none dark:border-white/[0.15]"
+        className="absolute left-0 right-0 top-14 h-0 border-b border-black/30 pointer-events-none dark:border-white/[0.15]"
         style={horizontalDashes}
       />
       <div
-        className="absolute left-0 right-0 top-[calc(22vh+112px)] h-0 border-b border-black/30 pointer-events-none dark:border-white/[0.15]"
+        className="absolute left-0 right-0 top-[104px] h-0 border-b border-black/30 pointer-events-none dark:border-white/[0.15]"
         style={horizontalDashes}
       />
 
       {[
-        { top: "22vh", left: "30%" },
-        { top: "22vh", right: "30%" },
-        { top: "calc(22vh + 112px)", left: "30%" },
-        { top: "calc(22vh + 112px)", right: "30%" },
+        { top: "56px", left: "30%" },
+        { top: "56px", right: "30%" },
+        { top: "104px", left: "30%" },
+        { top: "104px", right: "30%" },
       ].map((position, index) => (
         <div
           key={index}
@@ -237,44 +236,34 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-white transition-colors duration-300 dark:bg-black">
-      <RightNavbar />
+      {/* Top Navbar */}
+      <Navbar />
       <BlueprintFrame />
 
-      <div className="absolute left-0 right-0 top-0 h-[22vh] pointer-events-auto -z-0 md:left-[30%] md:right-[30%]">
+      {/* Compact Time Strip (just enough for time to fit with micro-dot background) */}
+      <div className="absolute left-0 right-0 top-14 h-12 -z-0 pointer-events-auto overflow-hidden md:left-[30%] md:right-[30%]">
         <FooterBackground />
-        <div className="absolute bottom-3 right-2 z-10 pointer-events-auto">
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-auto">
           <CurrentTime />
         </div>
       </div>
 
-      <div className="absolute left-0 right-0 top-[22vh] z-50 flex h-[112px] items-center px-4 md:left-[30%] md:right-[30%]">
-        <div className="flex w-full items-center justify-between gap-4">
-          <div className="flex min-w-0 items-center gap-5">
-            <Link
-              href="/#blogs"
-              className="group flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-zinc-200/50 bg-zinc-100 text-zinc-400 transition-all hover:bg-zinc-200 hover:text-zinc-900 dark:border-zinc-800/50 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
-              aria-label="Back to blogs"
-            >
-              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-            </Link>
-            <div className="flex min-w-0 flex-col justify-center">
-              <h1 className="text-[20px] font-bold leading-none tracking-tight text-zinc-800 [text-shadow:-1.5px_0_0_rgba(0,200,255,0.3),1.5px_0_0_rgba(255,80,0,0.3)] dark:text-zinc-100 dark:[text-shadow:-1.5px_0_0_rgba(0,200,255,0.6),1.5px_0_0_rgba(255,80,0,0.6)] sm:text-[24px]">
-                Blog
-              </h1>
-              <p className="mt-1 truncate text-[12px] font-medium text-zinc-500 dark:text-zinc-400">
-                Blogs/{post.slug}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex h-20 items-start justify-end gap-2 py-1 sm:h-24 sm:gap-3">
-            <CommandMenu />
-            <ThemeToggle className="dark:text-zinc-400 hover:dark:text-zinc-300" />
-          </div>
+      {/* Main Content Area */}
+      <main className="relative z-10 ml-0 mr-0 flex flex-col px-4 pb-16 pt-[124px] sm:pt-[132px] md:ml-[30%] md:mr-[30%]">
+        {/* Top Back Navigation */}
+        <div className="flex items-center justify-between mb-4">
+          <Link
+            href="/blogs"
+            className="group inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            <span>See all posts</span>
+          </Link>
+          <span className="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
+            blogs/{post.slug}
+          </span>
         </div>
-      </div>
 
-      <main className="relative z-10 ml-0 mr-0 flex flex-col px-4 pb-16 pt-[calc(22vh+112px)] md:ml-[30%] md:mr-[30%]">
         <article className="relative">
           <header className="relative py-7">
             <div className="mb-4 flex flex-wrap gap-2">
@@ -288,7 +277,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               ))}
             </div>
 
-            <h1 className="text-[28px] font-bold leading-tight tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-[34px]">
+            <h1 className="text-[26px] font-bold leading-tight tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-[32px]">
               {post.title}
             </h1>
 
@@ -315,10 +304,17 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
           <BlueprintDivider />
 
-          <div className="space-y-5 py-7">
-            {post.content.map((block, index) => (
-              <BlogContentBlock key={`${block.type}-${index}`} block={block} />
-            ))}
+          {/* Full Article Content */}
+          <div className="py-7">
+            {post.contentHtml ? (
+              <BlogArticleContent contentHtml={post.contentHtml} />
+            ) : post.content ? (
+              <div className="space-y-5">
+                {post.content.map((block, index) => (
+                  <BlogContentBlock key={`${block.type}-${index}`} block={block} />
+                ))}
+              </div>
+            ) : null}
           </div>
 
           <BlueprintDivider className="mt-2" />

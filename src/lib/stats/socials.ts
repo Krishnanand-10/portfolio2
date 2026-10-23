@@ -1,7 +1,6 @@
 import { handles } from "@/data/links";
 import { portfolio } from "~/portfolio.config";
 import { REVALIDATE, requestTimeout, withFallback } from "./shared";
-import { getLeetCode } from "./leetcode";
 
 export type SocialProfileData = {
   name: string;
@@ -14,7 +13,7 @@ export type SocialProfileData = {
   stale: boolean;
 };
 
-const AVATAR = `https://github.com/${handles.github}.png`;
+const AVATAR = "/avatar.jpg";
 const LOCATION = `${portfolio.location} (${portfolio.utcOffset})`;
 
 /**
@@ -35,90 +34,90 @@ function getGithubProfile() {
     if (!res.ok) throw new Error(`github http ${res.status}`);
     const d = await res.json();
     return {
-      name: d.name || portfolio.name,
+      name: "Krishna Nand Tiwari",
       handle: handles.github,
       avatar: AVATAR,
       bio: d.bio || portfolio.bios.github,
       location: LOCATION,
       stats: [
-        { value: String(d.public_repos ?? 0), label: "Repositories" },
-        { value: String(d.followers ?? 0), label: "Followers" },
+        { value: String(d.public_repos ?? 13), label: "Repositories" },
+        { value: String(d.followers ?? 2), label: "Followers" },
       ],
     };
   }, {
-    name: portfolio.name,
+    name: "Krishna Nand Tiwari",
     handle: handles.github,
     avatar: AVATAR,
     bio: portfolio.bios.github,
     location: LOCATION,
-    stats: [],
+    stats: [
+      { value: "13", label: "Repositories" },
+      { value: "2", label: "Followers" },
+    ],
   });
 }
 
 /**
- * x.com is JavaScript-gated, but the server still renders Open Graph tags, so the
- * real bio is readable. Follower counts are not exposed without an API key.
+ * X.com profile data for the hover card.
  */
 function getXProfile() {
   return withFallback<SocialProfileData>("x-profile", async () => {
-    const res = await fetch(`https://x.com/${handles.x}`, {
-      next: { revalidate: REVALIDATE },
-      signal: requestTimeout(),
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; portfolio/1.0)" },
-    });
-    if (!res.ok) throw new Error(`x http ${res.status}`);
-    const html = await res.text();
-    const m = html.match(/property="og:description" content="([^"]+)"/);
-    if (!m) throw new Error("x bio not found");
-    const bio = m[1]
-      .replace(/&#x27;/g, "'")
-      .replace(/&amp;/g, "&")
-      .replace(/&quot;/g, '"');
+    let followers = FOLLOWERS.x || "3";
+    let following = "17";
+    try {
+      const res = await fetch(`https://x.com/${handles.x}`, {
+        next: { revalidate: REVALIDATE },
+        signal: requestTimeout(),
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; portfolio/1.0)" },
+      });
+      if (res.ok) {
+        const html = await res.text();
+        const m = html.match(/property="og:description" content="([^"]+)"/);
+        if (m) {
+          const folMatch = m[1].match(/([\d,]+)\s+followers/i);
+          const fingMatch = m[1].match(/([\d,]+)\s+following/i);
+          if (folMatch) followers = folMatch[1];
+          if (fingMatch) following = fingMatch[1];
+        }
+      }
+    } catch {
+      // Fallback to defaults
+    }
     return {
-      name: portfolio.name,
+      name: "Krishna Nand Tiwari",
       handle: `@${handles.x}`,
       avatar: AVATAR,
-      bio,
+      bio: portfolio.bios.x,
       location: LOCATION,
       banner: true,
-      stats: FOLLOWERS.x ? [{ value: FOLLOWERS.x, label: "Followers" }] : [],
+      stats: [
+        { value: following, label: "Following" },
+        { value: followers, label: "Followers" },
+      ],
     };
   }, {
-    name: portfolio.name,
+    name: "Krishna Nand Tiwari",
     handle: `@${handles.x}`,
     avatar: AVATAR,
     bio: portfolio.bios.x,
     location: LOCATION,
     banner: true,
-    stats: [],
+    stats: [
+      { value: "17", label: "Following" },
+      { value: "3", label: "Followers" },
+    ],
   });
 }
 
 async function getLeetCodeProfile(): Promise<SocialProfileData> {
-  if (!handles.leetcode) {
-    return {
-      name: portfolio.name,
-      handle: "",
-      avatar: AVATAR,
-      bio: "",
-      location: LOCATION,
-      stats: [],
-      stale: false,
-    };
-  }
-  const lc = await getLeetCode();
   return {
     name: portfolio.name,
-    handle: `u/${lc.username}`,
+    handle: "",
     avatar: AVATAR,
-    bio: `${lc.solved.all.toLocaleString()} solved · ${lc.contests} contests`,
+    bio: "",
     location: LOCATION,
-    banner: true,
-    stats: [
-      { value: lc.solved.all.toLocaleString(), label: "Solved" },
-      { value: `#${lc.globalRanking.toLocaleString()}`, label: "Contest rank" },
-    ],
-    stale: lc.stale,
+    stats: [],
+    stale: false,
   };
 }
 
@@ -128,15 +127,15 @@ async function getLeetCodeProfile(): Promise<SocialProfileData> {
  */
 function getLinkedInProfile(): SocialProfileData {
   return {
-    name: portfolio.name,
+    name: "Krishna Nand Tiwari",
     handle: `in/${handles.linkedin}`,
     avatar: AVATAR,
     bio: portfolio.bios.linkedin,
     location: portfolio.location,
     banner: true,
-    stats: FOLLOWERS.linkedin
-      ? [{ value: FOLLOWERS.linkedin, label: "Followers" }]
-      : [],
+    stats: [
+      { value: "500+", label: "Connections" },
+    ],
     stale: false,
   };
 }

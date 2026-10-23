@@ -5,14 +5,12 @@ import { portfolio } from "~/portfolio.config";
 import { CommandMenu } from "@/components/command-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CurrentTime } from "@/components/CurrentTime";
-import { RightNavbar } from "@/components/RightNavbar";
 import { FlightButton } from "@/components/FlightButton";
 import DisplacementText from "@/components/DisplacementText";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import SocialHoverCard from "@/components/pixel-perfect/social-hover-card";
-import { BannerParticles } from "@/components/BannerParticles";
-import Image from "next/image";
+import { VideoBanner } from "@/components/VideoBanner";
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -77,7 +75,6 @@ export default function ContactPage() {
           --autofill-text: #fafafa;
         }
       `}} />
-      <RightNavbar />
 
       {/* Blueprint Vertical Lines */}
       <div className="absolute top-0 bottom-0 left-[30%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
@@ -103,35 +100,13 @@ export default function ContactPage() {
           }} />
       ))}
 
-      {/* Cell 1: Dot Matrix Background */}
       {/* Cell 1: Banner */}
-<div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-0 h-[22vh] -z-0 pointer-events-auto overflow-hidden bg-white dark:bg-black shadow-[0_4px_12px_rgba(2,6,23,0.04)] dark:shadow-[0_4px_12px_rgba(2,6,23,0.10)]">
-  <Image
-    src="/banner-light.jpg"
-    alt=""
-    fill
-    fetchPriority="high"
-    sizes="(min-width: 768px) 40vw, 100vw"
-    quality={100}
-    className="object-cover object-center dark:hidden"
-  />
-  <Image
-    src="/banner-dark.jpg"
-    alt=""
-    fill
-    fetchPriority="high"
-    sizes="(min-width: 768px) 40vw, 100vw"
-    quality={100}
-    className="hidden object-cover object-center dark:block"
-  />
-  <BannerParticles />
-  <div className="absolute inset-x-0 bottom-0 h-10 pointer-events-none z-[5] bg-gradient-to-t from-white/90 to-transparent dark:from-black/50 dark:to-transparent" />
-  <div className="absolute left-0 top-0 bottom-0 w-8 pointer-events-none z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-black/40 dark:to-transparent" />
-  <div className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-black/40 dark:to-transparent" />
-  <div className="absolute bottom-3 right-2 z-10 pointer-events-auto">
-    <CurrentTime />
-  </div>
-</div>
+      <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-0 h-[22vh] -z-0 pointer-events-auto overflow-hidden bg-white dark:bg-black shadow-[0_4px_12px_rgba(2,6,23,0.04)] dark:shadow-[0_4px_12px_rgba(2,6,23,0.10)]">
+        <VideoBanner />
+        <div className="absolute bottom-3 right-2 z-10 pointer-events-auto">
+          <CurrentTime />
+        </div>
+      </div>
       {/* Cell 2: Header with Back Button + Title + Controls */}
       <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-[22vh] h-[112px] flex items-center px-4 z-50">
         <div className="flex w-full items-center justify-between">

@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const pages: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified, changeFrequency: "weekly", priority: 1 },
-    ...["projects", "contact"].map((path) => ({
+    ...["projects", "blogs", "contact"].map((path) => ({
       url: `${SITE_URL}/${path}`,
       lastModified,
       changeFrequency: "monthly" as const,

@@ -6,13 +6,7 @@ import * as HoverCard from "@radix-ui/react-hover-card";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { portfolio } from "~/portfolio.config";
-import Image, { getImageProps } from "next/image";
-import lightBannerImage from "../../../public/banner-light.jpg";
-import darkBannerImage from "../../../public/banner-dark.jpg";
-
-const bannerImageProps = { width: 250, height: 64, quality: 70, sizes: "250px" } as const;
-const lightBannerPreload = getImageProps({ ...bannerImageProps, alt: "", src: lightBannerImage }).props;
-const darkBannerPreload = getImageProps({ ...bannerImageProps, alt: "", src: darkBannerImage }).props;
+import Image from "next/image";
 
 interface SocialProfile {
   name: string;
@@ -34,35 +28,43 @@ interface SocialProfile {
  * carrying no stat numbers - hardcoded counts go stale and this file used to
  * claim 52 repositories and 19 followers long after both had moved.
  */
-const avatar = `https://github.com/${portfolio.handles.github}.png`;
+const avatar = "/avatar.jpg";
 const where = `${portfolio.location} (${portfolio.utcOffset})`;
 
 const socialProfiles: Record<string, SocialProfile> = {
   GitHub: {
-    name: portfolio.name,
+    name: "Krishna Nand Tiwari",
     handle: portfolio.handles.github,
     avatar,
     bio: portfolio.bios.github,
     location: where,
-    stats: [],
+    stats: [
+      { label: "Repositories", value: "13" },
+      { label: "Followers", value: "2" },
+    ],
   },
   Twitter: {
-    name: portfolio.name,
+    name: "Krishna Nand Tiwari",
     handle: `@${portfolio.handles.x}`,
     avatar,
     banner: true,
     bio: portfolio.bios.x,
     location: where,
-    stats: [],
+    stats: [
+      { label: "Following", value: "17" },
+      { label: "Followers", value: "3" },
+    ],
   },
   LinkedIn: {
-    name: portfolio.name,
+    name: "Krishna Nand Tiwari",
     handle: `in/${portfolio.handles.linkedin}`,
     avatar,
     banner: true,
     bio: portfolio.bios.linkedin,
-    location: where,
-    stats: [],
+    location: portfolio.location,
+    stats: [
+      { label: "Connections", value: "500+" },
+    ],
   },
 };
 
@@ -83,16 +85,7 @@ export default function SocialHoverCard({ socialName, children, profile: live }:
   }
 
   if (profile.banner) {
-    ReactDOM.preload(lightBannerPreload.src, {
-      as: "image",
-      imageSrcSet: lightBannerPreload.srcSet,
-      imageSizes: lightBannerPreload.sizes,
-    });
-    ReactDOM.preload(darkBannerPreload.src, {
-      as: "image",
-      imageSrcSet: darkBannerPreload.srcSet,
-      imageSizes: darkBannerPreload.sizes,
-    });
+    ReactDOM.preload("/banner-poster.jpg", { as: "image" });
   }
 
   return (
@@ -142,9 +135,9 @@ export default function SocialHoverCard({ socialName, children, profile: live }:
                             height={48}
                             loading="eager"
                             decoding="async"
-                            quality={75}
+                            quality={90}
                             sizes="48px"
-                            className="w-full h-full object-cover grayscale opacity-90 contrast-100 mix-blend-multiply dark:mix-blend-normal"
+                            className="w-full h-full object-cover"
                           />
                         </div>
                         {/* Discord active green dot indicator */}
@@ -229,23 +222,16 @@ export default function SocialHoverCard({ socialName, children, profile: live }:
                   <>
                     {/* Banner Section */}
                     {profile.banner ? (
-                      <div className="relative w-full h-[64px] overflow-hidden bg-[#d9e5e7] dark:bg-[#071329]">
+                      <div className="relative w-full h-[64px] overflow-hidden bg-zinc-900">
                         <Image
-                          {...bannerImageProps}
-                          src={lightBannerImage}
-                          alt=""
-                          placeholder="blur"
-                          loading="eager"
-                          className="h-full w-full object-cover object-center dark:hidden"
+                          src="/banner-poster.jpg"
+                          alt="Banner"
+                          fill
+                          sizes="250px"
+                          quality={85}
+                          className="h-full w-full object-cover object-center"
                         />
-                        <Image
-                          {...bannerImageProps}
-                          src={darkBannerImage}
-                          alt=""
-                          placeholder="blur"
-                          loading="eager"
-                          className="hidden h-full w-full object-cover object-center dark:block"
-                        />
+                        <div className="absolute inset-0 bg-black/20" />
                       </div>
                     ) : (
                       // Fallback dark gradient banner for cards without a customized banner
@@ -269,9 +255,9 @@ export default function SocialHoverCard({ socialName, children, profile: live }:
                             height={56}
                             loading="eager"
                             decoding="async"
-                            quality={75}
+                            quality={90}
                             sizes="56px"
-                            className="w-full h-full object-cover grayscale opacity-90 contrast-100 mix-blend-multiply dark:mix-blend-normal"
+                            className="w-full h-full object-cover"
                           />
                         </div>
                       </div>
